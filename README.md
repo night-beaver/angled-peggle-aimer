@@ -1,9 +1,8 @@
 # Angled Peggle aimer
 
-This repository currently only provides the web component and works as a **proof
-of concept**. Using the web component with a back end to visualize chat's aim
-should be easy, if not trivial, but that functionality is not provided here at
-the moment.
+This repository currently only provides the web component and a demo. Using
+the web component with a back end to visualize chat's aim should be easy, 
+if not trivial, but that functionality is not provided here at the moment.
 
 ## Usage
 
