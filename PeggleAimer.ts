@@ -60,6 +60,10 @@ class Vec2D {
     }
 }
 
+type DialHand = SVGGElement & {
+    angle: number;
+};
+
 export default class PeggleAimerElement extends HTMLElement {
     svg: SVGElement = document.createElementNS(
         'http://www.w3.org/2000/svg',
@@ -69,10 +73,9 @@ export default class PeggleAimerElement extends HTMLElement {
         'http://www.w3.org/2000/svg',
         'g'
     );
-    handGroup: SVGGElement = document.createElementNS(
-        'http://www.w3.org/2000/svg',
-        'g'
-    );
+    handGroup: Omit<SVGGElement, 'children'> & {
+        children: HTMLCollectionOf<DialHand>;
+    } = document.createElementNS('http://www.w3.org/2000/svg', 'g') as any;
     private _width: number = 0;
     public get width(): number {
         return this._width;
@@ -171,13 +174,13 @@ export default class PeggleAimerElement extends HTMLElement {
         pos.x -= this.width / 2;
         angle = Math.atan2(pos.y, pos.x);
         angle = rad2deg(angle);
-        this.addHand(angle,"red");
+        this.addHand(angle, 'red');
     };
 
     constructor() {
         super();
     }
-    connectedCallback(){
+    connectedCallback() {
         this.width = 500;
         this.height = 500;
         this.appendChild(this.svg);
@@ -206,22 +209,26 @@ export default class PeggleAimerElement extends HTMLElement {
         return Math.min(this.width / 2, this.height);
     }
     public addHand(angle: number, color: string = 'red') {
-        let group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        this.handGroup.appendChild(group);
-        let t = this.addTextElement(group, angle);
-        let p = this.createArrow(angle,20);
-        group.appendChild(p);
+        let result: DialHand = document.createElementNS(
+            'http://www.w3.org/2000/svg',
+            'g'
+        ) as any;
+        result.angle = angle;
+        this.handGroup.appendChild(result);
+        let t = this.addTextElement(result, angle);
+        let p = this.createArrow(angle, 20);
+        result.appendChild(p);
 
         p.style.fill = color;
-        p.style.fillOpacity = "0.5";
+        p.style.fillOpacity = '0.5';
         p.style.stroke = color;
-        p.style.strokeWidth = "2px";
+        p.style.strokeWidth = '2px';
         t.style.fill = color;
-        group.appendChild(p);
-        group.appendChild(t);
-        return group;
+        result.appendChild(p);
+        result.appendChild(t);
+        return result;
     }
-    public refresh(){
+    public refresh() {
         this.clear();
         this.addDial();
     }
