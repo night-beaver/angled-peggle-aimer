@@ -184,7 +184,7 @@ export default class PeggleAimerElement extends HTMLElement {
         result.angle = angle;
         this.handGroup.appendChild(result);
         let t = this.addTextElement(result, angle);
-        let p = this.createArrow(angle, 20);
+        let p = this.createArrow(angle, 10);
         result.appendChild(p);
         p.style.fill = color;
         p.style.fillOpacity = '0.5';
