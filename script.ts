@@ -212,6 +212,10 @@ class PeggleAimerElement extends HTMLElement {
         group.appendChild(p);
 
         p.style.fill = color;
+        p.style.fillOpacity = "0.5";
+        p.style.stroke = color;
+        p.style.strokeWidth = "2px";
+        t.style.fill = color;
         group.appendChild(p);
         group.appendChild(t);
         return group;
