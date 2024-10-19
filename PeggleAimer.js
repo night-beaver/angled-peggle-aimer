@@ -60,7 +60,7 @@ class Vec2D {
 class PeggleAimerElement extends HTMLElement {
     svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     baseGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    handleGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    handGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     _width = 500;
     get width() {
         return this._width;
@@ -142,7 +142,7 @@ class PeggleAimerElement extends HTMLElement {
         this.checkAttributes();
     });
     mouseListener = (e) => {
-        this.handleGroup.innerHTML = '';
+        this.handGroup.innerHTML = '';
         let angle;
         let pos = new Vec2D(e.clientX, e.clientY);
         let bb = this.svg.getBoundingClientRect();
@@ -151,13 +151,13 @@ class PeggleAimerElement extends HTMLElement {
         pos.x -= this.width / 2;
         angle = Math.atan2(pos.y, pos.x);
         angle = rad2deg(angle);
-        this.addHandle(angle, "red");
+        this.addHand(angle, "red");
     };
     constructor() {
         super();
         this.appendChild(this.svg);
         this.svg.appendChild(this.baseGroup);
-        this.svg.appendChild(this.handleGroup);
+        this.svg.appendChild(this.handGroup);
         this.width = 500;
         this.height = 500;
         this.style.display = 'block';
@@ -179,9 +179,9 @@ class PeggleAimerElement extends HTMLElement {
     getRadius() {
         return Math.min(this.width / 2, this.height);
     }
-    addHandle(angle, color = 'red') {
+    addHand(angle, color = 'red') {
         let group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        this.handleGroup.appendChild(group);
+        this.handGroup.appendChild(group);
         let t = this.addTextElement(group, angle);
         let p = this.createArrow(angle, 20);
         group.appendChild(p);
@@ -232,7 +232,7 @@ class PeggleAimerElement extends HTMLElement {
     }
     clear() {
         this.baseGroup.innerHTML = '';
-        this.handleGroup.innerHTML = '';
+        this.handGroup.innerHTML = '';
     }
     createArrow(angle, width) {
         let radius = this.getRadius();

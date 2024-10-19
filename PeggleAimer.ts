@@ -69,7 +69,7 @@ class PeggleAimerElement extends HTMLElement {
         'http://www.w3.org/2000/svg',
         'g'
     );
-    handleGroup: SVGGElement = document.createElementNS(
+    handGroup: SVGGElement = document.createElementNS(
         'http://www.w3.org/2000/svg',
         'g'
     );
@@ -162,7 +162,7 @@ class PeggleAimerElement extends HTMLElement {
         this.checkAttributes();
     });
     mouseListener = (e: MouseEvent) => {
-        this.handleGroup.innerHTML = '';
+        this.handGroup.innerHTML = '';
         let angle: number;
         let pos = new Vec2D(e.clientX, e.clientY);
         let bb = this.svg.getBoundingClientRect();
@@ -171,14 +171,14 @@ class PeggleAimerElement extends HTMLElement {
         pos.x -= this.width / 2;
         angle = Math.atan2(pos.y, pos.x);
         angle = rad2deg(angle);
-        this.addHandle(angle,"red");
+        this.addHand(angle,"red");
     };
 
     constructor() {
         super();
         this.appendChild(this.svg);
         this.svg.appendChild(this.baseGroup);
-        this.svg.appendChild(this.handleGroup);
+        this.svg.appendChild(this.handGroup);
 
         this.width = 500;
         this.height = 500;
@@ -204,9 +204,9 @@ class PeggleAimerElement extends HTMLElement {
     private getRadius() {
         return Math.min(this.width / 2, this.height);
     }
-    public addHandle(angle: number, color: string = 'red') {
+    public addHand(angle: number, color: string = 'red') {
         let group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        this.handleGroup.appendChild(group);
+        this.handGroup.appendChild(group);
         let t = this.addTextElement(group, angle);
         let p = this.createArrow(angle,20);
         group.appendChild(p);
@@ -284,7 +284,7 @@ class PeggleAimerElement extends HTMLElement {
     }
     private clear() {
         this.baseGroup.innerHTML = '';
-        this.handleGroup.innerHTML = '';
+        this.handGroup.innerHTML = '';
     }
     private createArrow(angle: number, width: number) {
         let radius = this.getRadius();
