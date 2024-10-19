@@ -60,7 +60,7 @@ class Vec2D {
     }
 }
 
-class PeggleAimerElement extends HTMLElement {
+export default class PeggleAimerElement extends HTMLElement {
     svg: SVGElement = document.createElementNS(
         'http://www.w3.org/2000/svg',
         'svg'
@@ -73,7 +73,7 @@ class PeggleAimerElement extends HTMLElement {
         'http://www.w3.org/2000/svg',
         'g'
     );
-    private _width: number = 500;
+    private _width: number = 0;
     public get width(): number {
         return this._width;
     }
@@ -87,7 +87,7 @@ class PeggleAimerElement extends HTMLElement {
         this.svg.setAttribute('width', `${this.width}`);
         this.addDial();
     }
-    private _height: number = 500;
+    private _height: number = 0;
     public get height(): number {
         return this._height;
     }
@@ -176,14 +176,15 @@ class PeggleAimerElement extends HTMLElement {
 
     constructor() {
         super();
+    }
+    connectedCallback(){
+        this.width = 500;
+        this.height = 500;
         this.appendChild(this.svg);
         this.svg.appendChild(this.baseGroup);
         this.svg.appendChild(this.handGroup);
 
-        this.width = 500;
-        this.height = 500;
         this.style.display = 'block';
-        console.log(this.svg.viewportElement);
         this.addDial();
 
         this.checkAttributes();

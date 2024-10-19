@@ -1,4 +1,3 @@
-"use strict";
 function deg2rad(deg) {
     return deg * (Math.PI / 180);
 }
@@ -57,11 +56,11 @@ class Vec2D {
         return new Vec2D(x, y);
     }
 }
-class PeggleAimerElement extends HTMLElement {
+export default class PeggleAimerElement extends HTMLElement {
     svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     baseGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     handGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    _width = 500;
+    _width = 0;
     get width() {
         return this._width;
     }
@@ -75,7 +74,7 @@ class PeggleAimerElement extends HTMLElement {
         this.svg.setAttribute('width', `${this.width}`);
         this.addDial();
     }
-    _height = 500;
+    _height = 0;
     get height() {
         return this._height;
     }
@@ -155,13 +154,14 @@ class PeggleAimerElement extends HTMLElement {
     };
     constructor() {
         super();
+    }
+    connectedCallback() {
+        this.width = 500;
+        this.height = 500;
         this.appendChild(this.svg);
         this.svg.appendChild(this.baseGroup);
         this.svg.appendChild(this.handGroup);
-        this.width = 500;
-        this.height = 500;
         this.style.display = 'block';
-        console.log(this.svg.viewportElement);
         this.addDial();
         this.checkAttributes();
         this.observer.observe(this, { attributes: true });
