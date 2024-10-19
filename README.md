@@ -4,7 +4,7 @@
 
 ### Using the web component
 
-First, ensure that the script is included in your document, by using the script
+First, ensure that the script is included in your document by using the script
 tag: `<script src="PeggleAimer.js" type="module"></script>`. Please note that
 the `type="module"` attribute **MUST be present** for the component to work.
 
