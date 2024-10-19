@@ -255,7 +255,7 @@ export default class PeggleAimerElement extends HTMLElement {
         pathEnd.add(direction
             .clone()
             .rotate(-Math.PI / 2)
-            .multiplyScalar(width / 3));
+            .multiplyScalar(width / 2));
         let lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         lineElement.style.fill = 'black';
         lineElement.setAttribute('d', [

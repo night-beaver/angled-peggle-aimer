@@ -317,7 +317,7 @@ export default class PeggleAimerElement extends HTMLElement {
             direction
                 .clone()
                 .rotate(-Math.PI / 2)
-                .multiplyScalar(width / 3)
+                .multiplyScalar(width / 2)
         );
 
         let lineElement: SVGPathElement = document.createElementNS(
