@@ -62,6 +62,8 @@ class Vec2D {
 
 type DialHand = SVGGElement & {
     angle: number;
+    getCoordinates: (distance: number) => Vec2D;
+    aimer: PeggleAimerElement;
 };
 
 export default class PeggleAimerElement extends HTMLElement {
@@ -170,11 +172,13 @@ export default class PeggleAimerElement extends HTMLElement {
         let pos = new Vec2D(e.clientX, e.clientY);
         let bb = this.svg.getBoundingClientRect();
         pos.subtract(new Vec2D(bb.left, bb.top));
+        let oldPos = pos.clone();
         pos.y -= this.topOffset;
         pos.x -= this.width / 2;
         angle = Math.atan2(pos.y, pos.x);
         angle = rad2deg(angle);
-        this.addHand(angle, 'red');
+        let hand = this.addHand(angle, 'red');
+        console.log(oldPos, hand.getCoordinates(pos.length()));
     };
 
     constructor() {
@@ -208,25 +212,46 @@ export default class PeggleAimerElement extends HTMLElement {
     private getRadius() {
         return Math.min(this.width / 2, this.height);
     }
+    public getHands() {
+        return this.handGroup.querySelectorAll(
+            '.dial-hand'
+        ) as NodeListOf<DialHand>;
+    }
     public addHand(angle: number, color: string = 'red') {
-        let result: DialHand = document.createElementNS(
+        let newHand: DialHand = document.createElementNS(
             'http://www.w3.org/2000/svg',
             'g'
         ) as any;
-        result.angle = angle;
-        this.handGroup.appendChild(result);
-        let t = this.addTextElement(result, angle);
+        newHand.angle = angle;
+        newHand.aimer = this;
+        newHand.classList.add('dial-hand');
+        this.handGroup.appendChild(newHand);
+        let t = this.addTextElement(newHand, angle);
         let p = this.createArrow(angle, 10);
-        result.appendChild(p);
+        newHand.appendChild(p);
 
         p.style.fill = color;
         p.style.fillOpacity = '0.5';
         p.style.stroke = color;
         p.style.strokeWidth = '2px';
         t.style.fill = color;
-        result.appendChild(p);
-        result.appendChild(t);
-        return result;
+        newHand.appendChild(p);
+        newHand.appendChild(t);
+        newHand.getCoordinates = function (distance?: number) {
+            let coordinates = Vec2D.fromAngle(deg2rad(angle));
+            if (distance == undefined) {
+                let handleLength = this.aimer.width / 2;
+                handleLength -= this.aimer.margin;
+                handleLength + this.aimer.innerRadius;
+                distance = this.aimer.innerRadius + handleLength / 2;
+            }
+            coordinates.multiplyScalar(distance);
+            coordinates.x += this.aimer.width / 2;
+            coordinates.y += this.aimer.topOffset;
+
+            return coordinates;
+        };
+        return newHand;
     }
     public refresh() {
         this.clear();

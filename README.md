@@ -30,10 +30,11 @@ document.body.appendChild(aimer);
 
 #### Methods
 
-The two main methods of the component you should be concerned about are:
+The three main methods of the component you should be aware of are:
 
 -   `refresh()`
 -   `addHand(angle, color)`
+-   `getHands()`
 
 The `refresh()` method deletes all hands from the dial and re-renders the dial.
 
@@ -41,6 +42,29 @@ The `addHand(angle, color)` method adds a new hand to the dial, with the
 corresponding angle (in degrees) and color. The color is a string and can be in
 any CSS-compatible format, such as a color name (`red`, `cyan`) or hex code
 (`#c0ffff`).
+
+The `getHands()` method returns a node list of all of the dial hands.
+
+Additionally, each hand has a `getCoordinates(distance?)` method. This returns a
+`Vec2D` object describing the coordinates (relative to the top-left corner of
+the aimer element) of a point along the hand. By default, (if `distance` is
+omitted in the call) this point is in the middle of the hand. You can obtain the
+coordinates by accessing the `x` and `y` properties of the returned `Vec2D`
+object. Example:
+
+```javascript
+let aimer = document.querySelector('peggle-aimer');
+
+// Get a reference to the first hand element.
+let hand = aimer.getHands()[0];
+
+// Show the coordinates of the hand's middle point in the console
+let coords = hand.getCoordinates();
+console.log(coords.x, coords.y);
+```
+
+This should be useful for figuring out where to move the mouse cursor
+for a Peggle shot of a specific angle.
 
 #### Properties and attributes
 
