@@ -194,6 +194,10 @@ class PeggleAimerElement extends HTMLElement {
         group.appendChild(t);
         return group;
     }
+    refresh() {
+        this.clear();
+        this.addDial();
+    }
     addTextElement(group, angle, radius = this.getRadius(), margin = this.margin / 2) {
         let textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         group.appendChild(textElement);

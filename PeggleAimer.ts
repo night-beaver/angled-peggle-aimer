@@ -190,7 +190,7 @@ class PeggleAimerElement extends HTMLElement {
         this.observer.observe(this, { attributes: true });
     }
 
-    public addDial() {
+    private addDial() {
         this.clear();
         let angle;
         for (angle = 0; angle < 180; angle += this.angleIncrement) {
@@ -220,6 +220,10 @@ class PeggleAimerElement extends HTMLElement {
         group.appendChild(t);
         return group;
     }
+    public refresh(){
+        this.clear();
+        this.addDial();
+    }
 
     private addTextElement(
         group: SVGGElement | SVGElement,
@@ -247,7 +251,7 @@ class PeggleAimerElement extends HTMLElement {
         return textElement;
     }
 
-    public addLine(
+    private addLine(
         group: SVGGElement | SVGElement,
         angle: number,
         radius: number = this.getRadius(),
@@ -278,11 +282,11 @@ class PeggleAimerElement extends HTMLElement {
         }
         return lineElement;
     }
-    public clear() {
+    private clear() {
         this.baseGroup.innerHTML = '';
         this.handleGroup.innerHTML = '';
     }
-    public createArrow(angle: number, width: number) {
+    private createArrow(angle: number, width: number) {
         let radius = this.getRadius();
         angle = deg2rad(angle);
         let direction = new Vec2D(Math.cos(angle), Math.sin(angle));
