@@ -60,7 +60,7 @@ class Vec2D {
     }
 }
 
-class PeggleAimer extends HTMLElement {
+class PeggleAimerElement extends HTMLElement {
     svg: SVGElement = document.createElementNS(
         'http://www.w3.org/2000/svg',
         'svg'
@@ -69,7 +69,7 @@ class PeggleAimer extends HTMLElement {
         'http://www.w3.org/2000/svg',
         'g'
     );
-    cursorGroup: SVGGElement = document.createElementNS(
+    handleGroup: SVGGElement = document.createElementNS(
         'http://www.w3.org/2000/svg',
         'g'
     );
@@ -85,7 +85,7 @@ class PeggleAimer extends HTMLElement {
         }
         this.style.width = `${this.width}px`;
         this.svg.setAttribute('width', `${this.width}`);
-        this.addBase();
+        this.addDial();
     }
     private _height: number = 500;
     public get height(): number {
@@ -100,7 +100,7 @@ class PeggleAimer extends HTMLElement {
         }
         this.style.height = `${this.height}px`;
         this.svg.setAttribute('height', `${this.height}`);
-        this.addBase();
+        this.addDial();
     }
     lineStyle: Record<string, string> = {
         stroke: 'black',
@@ -119,7 +119,7 @@ class PeggleAimer extends HTMLElement {
         if (value == old) {
             return;
         }
-        this.addBase();
+        this.addDial();
     }
 
     private _innerRadius = 30;
@@ -133,7 +133,7 @@ class PeggleAimer extends HTMLElement {
         if (value == old) {
             return;
         }
-        this.addBase();
+        this.addDial();
     }
 
     private _margin = 40;
@@ -147,7 +147,7 @@ class PeggleAimer extends HTMLElement {
         if (value == old) {
             return;
         }
-        this.addBase();
+        this.addDial();
     }
 
     private _topOffset = 10;
@@ -156,13 +156,13 @@ class PeggleAimer extends HTMLElement {
     }
     public set topOffset(value) {
         this._topOffset = value;
-        this.addBase();
+        this.addDial();
     }
     observer = new MutationObserver(() => {
         this.checkAttributes();
     });
     mouseListener = (e: MouseEvent) => {
-        this.cursorGroup.innerHTML = '';
+        this.handleGroup.innerHTML = '';
         let angle: number;
         let pos = new Vec2D(e.clientX, e.clientY);
         let bb = this.svg.getBoundingClientRect();
@@ -171,26 +171,26 @@ class PeggleAimer extends HTMLElement {
         pos.x -= this.width / 2;
         angle = Math.atan2(pos.y, pos.x);
         angle = rad2deg(angle);
-        this.addCursor(angle,"#ff000099");
+        this.addHandle(angle,"red");
     };
 
     constructor() {
         super();
         this.appendChild(this.svg);
         this.svg.appendChild(this.baseGroup);
-        this.svg.appendChild(this.cursorGroup);
+        this.svg.appendChild(this.handleGroup);
 
         this.width = 500;
         this.height = 500;
         this.style.display = 'block';
         console.log(this.svg.viewportElement);
-        this.addBase();
+        this.addDial();
 
         this.checkAttributes();
         this.observer.observe(this, { attributes: true });
     }
 
-    public addBase() {
+    public addDial() {
         this.clear();
         let angle;
         for (angle = 0; angle < 180; angle += this.angleIncrement) {
@@ -204,9 +204,9 @@ class PeggleAimer extends HTMLElement {
     private getRadius() {
         return Math.min(this.width / 2, this.height);
     }
-    public addCursor(angle: number, color: string = 'red') {
+    public addHandle(angle: number, color: string = 'red') {
         let group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        this.cursorGroup.appendChild(group);
+        this.handleGroup.appendChild(group);
         let t = this.addTextElement(group, angle);
         let p = this.createArrow(angle,20);
         group.appendChild(p);
@@ -276,7 +276,7 @@ class PeggleAimer extends HTMLElement {
     }
     public clear() {
         this.baseGroup.innerHTML = '';
-        this.cursorGroup.innerHTML = '';
+        this.handleGroup.innerHTML = '';
     }
     public createArrow(angle: number, width: number) {
         let radius = this.getRadius();
@@ -342,4 +342,4 @@ class PeggleAimer extends HTMLElement {
     }
 }
 
-customElements.define('peggle-aimer', PeggleAimer);
+customElements.define('peggle-aimer', PeggleAimerElement);
